@@ -1,0 +1,35 @@
+.box {
+  width: 500px;
+}
+
+.main {
+  height: 100vh;
+  align-items: center;
+}
+
+.NotFound {
+  font-size: 200px;
+  display: flex;
+  justify-content: center;
+  color: blue;
+  font-weight: bolder;
+  font-weight: 900;
+}
+
+.Opps {
+  font-size: 70px;
+  font-weight: bolder;
+  font-weight: 900;
+}
+
+.Nothing {
+  font-size: 70px;
+  font-weight: bolder;
+  font-weight: 900;
+  color: blue;
+}
+
+.NothingHere {
+  display: flex;
+  justify-content: center;
+}
