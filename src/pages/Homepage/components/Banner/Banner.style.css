@@ -15,14 +15,27 @@
 }
 
 .banner-text-area {
-  width: 36%;
+  width: 30rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  padding: 2rem;
 }
 
 .banner-text-area > * {
   z-index: 2;
+}
+
+@media (max-width: 480px) {
+  .banner-text-area {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
+.banner-text {
+  padding: 0 20px;
 }

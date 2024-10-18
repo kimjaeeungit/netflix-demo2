@@ -24,3 +24,22 @@
   transform: scale(1.3) translateZ(20px);
   z-index: 2;
 }
+
+.title {
+  font-size: 25px;
+}
+
+.movie-detail {
+  display: flex;
+  font-size: 15px;
+  position: absolute;
+  bottom: 10px;
+}
+
+.movie-detail > * {
+  padding-left: 10px;
+}
+
+.adult {
+  color: red;
+}

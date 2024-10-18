@@ -23,8 +23,8 @@ const Banner = () => {
       className="banner"
     >
       <div className="text-white banner-text-area">
-        <h1>{data?.results[0].title}</h1>
-        <p>{data?.results[0].overview}</p>
+        <h1 className="banner-text">{data?.results[0].title}</h1>
+        <p className="banner-text">{data?.results[0].overview}</p>
       </div>
     </div>
   );
