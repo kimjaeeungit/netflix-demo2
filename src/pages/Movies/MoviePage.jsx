@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import { Col, Container, Row, Spinner } from 'react-bootstrap';
 import { Alert } from 'bootstrap';
 import MovieCard from '../../common/MovieCard/MovieCard';
+import { useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
 
 // 1. 페이지네이션 설치
 // 2. page state 만들기
@@ -14,10 +16,19 @@ import MovieCard from '../../common/MovieCard/MovieCard';
 // 1. nav바에서 클릭해서 온경우 => popularMovie 보여주기
 // 2. keyword를 입력해서 온경우 => keyword와 관련돈 영화들을 보여줌
 const MoviePage = () => {
+  // 페이지 네이션
+  const [page, setPage] = useState(1);
   // url 쿼리값 읽어오는거 하기
   const [query, setQuery] = useSearchParams();
   const keyword = query.get('q');
-  const { data, isLoading, isError, error } = useSearchMovieQuery({ keyword });
+  const { data, isLoading, isError, error } = useSearchMovieQuery({
+    keyword,
+    page,
+  });
+  const handlePageClick = ({ selected }) => {
+    console.log('page', page);
+    setPage(selected + 1);
+  };
   if (isLoading) {
     return (
       <div className="spinner-area">
@@ -48,6 +59,27 @@ const MoviePage = () => {
               </Col>
             ))}
           </Row>
+          <ReactPaginate
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={2}
+            pageCount={data?.total_pages} //전체 페이지
+            previousLabel="< previous"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+            renderOnZeroPageCount={null}
+            forcePage={page - 1}
+          />
         </Col>
       </Row>
     </Container>
