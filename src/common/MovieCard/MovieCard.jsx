@@ -7,8 +7,6 @@ const MovieCard = ({ movie }) => {
   const { data: genreData } = useMovieGenreQuery();
   const navigate = useNavigate();
 
-  console.log('movieCard', movie);
-
   const moveToDetail = (movieId) => {
     navigate(`/movies/${movieId}`);
   };

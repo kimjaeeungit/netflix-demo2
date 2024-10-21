@@ -1,0 +1,85 @@
+.poster-img {
+  margin: 50px 20px;
+  height: 600px;
+  width: 400px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.movie-detail-page {
+  margin: 50px;
+}
+
+.genre-badge {
+  margin-right: 7px;
+}
+
+.detail-title {
+  font-size: 2.5rem;
+  margin-top: 20px;
+}
+
+.detail-overview {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  border-top: 4px solid bisque;
+  border-bottom: 4px solid bisque;
+  padding: 30px 0;
+}
+
+.detail-popularity {
+  display: flex;
+}
+
+.detail-popularity > * {
+  font-size: 19px;
+}
+
+.all-icon {
+  /* 해야될것 글자색, all 위치 조정 */
+  width: 30px;
+  height: 30px;
+  background-color: #ffcc00;
+  border-radius: 50%;
+  border: white solid 1px;
+  margin: 18px;
+}
+.all-icon span {
+  color: black; /* 텍스트 색상 설정 */
+  font-weight: bold; /* 텍스트를 강조할 수 있음 */
+  font-size: 14px;
+}
+
+.num-icon {
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  border-radius: 20%;
+  margin: 18px;
+  padding-left: 3px;
+}
+
+.badge-div * {
+  margin-bottom: 5px;
+}
+
+.badge-detail-div {
+  display: flex;
+}
+
+.badge-detail {
+  font-size: 1rem !important; /* !important 사용하여 우선순위 상승 */
+  display: inline-block !important; /* 배지가 인라인 블록으로 표시되도록 설정 */
+  width: 130px;
+  height: 40px;
+  overflow: hidden; /* 넘치는 내용 숨기기 */
+  white-space: nowrap !important; /* 텍스트 줄바꿈 방지 */
+  padding: 0.6rem !important;
+  border-radius: 1rem !important;
+}
+
+.badge-detail-div span {
+  padding-top: 4px;
+  padding-left: 10px;
+  font-size: 1.2rem;
+}

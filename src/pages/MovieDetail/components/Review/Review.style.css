@@ -1,0 +1,14 @@
+.review-box {
+  border-radius: 16px;
+  border: 3px solid red;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.expand-btn {
+  background-color: transparent !important; /* Bootstrap의 기본 스타일을 덮어쓰기 위해 !important 사용 */
+  border: none; /*  테두리도 제거 */
+  padding-left: 0;
+  padding-top: 15px;
+  text-decoration: underline; /* 글자에 밑줄 추가 */
+}

@@ -7,6 +7,7 @@ import NotFoundPage from './pages/NotFoundpage/NotFoundPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MoviePage from './pages/Movies/MoviePage';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 // 1.홈페이지 /
 // 2.영화 전체 보여주는 페이지 (서치) /movies?q=asds
 // 3.영화 디테일 페이지 /movies/:id

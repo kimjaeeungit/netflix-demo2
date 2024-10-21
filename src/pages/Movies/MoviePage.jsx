@@ -26,7 +26,6 @@ const MoviePage = () => {
     page,
   });
   const handlePageClick = ({ selected }) => {
-    console.log('page', page);
     setPage(selected + 1);
   };
   if (isLoading) {
@@ -44,7 +43,6 @@ const MoviePage = () => {
     return <Alert variant="danger">{error.message}</Alert>;
   }
 
-  console.log('datadata', data);
   return (
     <Container>
       <Row>

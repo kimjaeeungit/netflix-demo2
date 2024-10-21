@@ -6,7 +6,6 @@ import { responsive } from '../../../../constants/responsive';
 
 const UpcomingMovieSlide = () => {
   const { data, isLoading, isError, error } = useUpcomingMoviesQuery();
-  console.log('data', data);
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
