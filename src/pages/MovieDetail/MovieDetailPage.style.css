@@ -83,3 +83,10 @@
   padding-left: 10px;
   font-size: 1.2rem;
 }
+
+.change-btn {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  color: black;
+}

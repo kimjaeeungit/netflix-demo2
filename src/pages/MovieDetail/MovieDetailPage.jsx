@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, Badge, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useMovieDetailQuery } from '../../hooks/useMovieDetail';
@@ -6,11 +6,25 @@ import './MovieDetailPage.style.css';
 import { UsbMicroFill, PeopleFill } from 'react-bootstrap-icons';
 import Review from './components/Review/Review';
 import { useMovieReviewQuery } from '../..//hooks/useMovieReview';
+import { useRecommendedMovieQuery } from '../../hooks/useRecommendedMovies';
+import MovieCard from '../../common/MovieCard/MovieCard';
+import MovieModal from '../../common/MovieModal/MovieModal';
 
 const MovieDetailPage = () => {
   const { id } = useParams();
   const { data, isLoading, isError, error } = useMovieDetailQuery(id);
   const { data: reviewData } = useMovieReviewQuery(id);
+  const [activeBtn, setActiveBtn] = useState(1);
+  const { data: recommendedMovieData } = useRecommendedMovieQuery(id);
+  const [modalShow, setModalShow] = useState(false);
+
+  const changePage = (num) => {
+    setActiveBtn(num);
+    if (activeBtn === 2) {
+      setModalShow(true);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="spinner-area">
@@ -112,20 +126,62 @@ const MovieDetailPage = () => {
           </div>
         </Col>
       </Row>
-      <div
-        style={{
-          fontSize: '1.6rem',
-          fontWeight: 'bolder',
-          marginBottom: '10px',
-        }}
-      >
-        Reviews
-      </div>
       <Row>
-        {reviewData?.results.map((review, index) => (
-          <Review review={review} key={index} />
-        ))}
+        <div>
+          <button
+            className="change-btn"
+            onClick={() => changePage(1)}
+            style={{
+              backgroundColor: activeBtn === 1 ? 'red' : 'gray',
+            }}
+          >
+            REVIEWS
+          </button>
+          <button
+            className="change-btn"
+            onClick={() => changePage(0)}
+            style={{
+              backgroundColor: activeBtn === 0 ? 'red' : 'gray',
+            }}
+          >
+            RELATED MOVIES
+          </button>
+          <button
+            className="change-btn"
+            onClick={() => setModalShow(true)}
+            style={{
+              backgroundColor: 'gray',
+            }}
+          >
+            예고편 보기
+          </button>
+        </div>
       </Row>
+      {activeBtn ? (
+        <Row>
+          <div
+            style={{
+              fontSize: '1.6rem',
+              fontWeight: 'bolder',
+              marginBottom: '10px',
+            }}
+          >
+            Reviews
+          </div>
+          {reviewData?.results.map((review, index) => (
+            <Review review={review} key={index} />
+          ))}
+        </Row>
+      ) : (
+        <Row>
+          {recommendedMovieData.results.map((movie, index) => (
+            <Col key={index} lg={3} xs={12}>
+              <MovieCard movie={movie} />
+            </Col>
+          ))}
+        </Row>
+      )}
+      <MovieModal id={id} show={modalShow} onHide={() => setModalShow(false)} />
     </Container>
   );
 };
