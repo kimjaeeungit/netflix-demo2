@@ -27,8 +27,12 @@ const Review = ({ review }) => {
             ? review.content
             : review.content.substring(0, MAX_LENGTH) + '...'}
         </div>
-        <button className=" expand-btn " onClick={toggleExpand}>
-          {isExpanded ? '접기' : '더보기'}
+        <button
+          className=" expand-btn "
+          onClick={toggleExpand}
+          style={{ color: 'white' }}
+        >
+          {isExpanded ? 'Collapse' : 'Expand'}
         </button>
       </div>
     </div>

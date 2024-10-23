@@ -48,6 +48,11 @@
   color: black; /* 텍스트 색상 설정 */
   font-weight: bold; /* 텍스트를 강조할 수 있음 */
   font-size: 14px;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .num-icon {

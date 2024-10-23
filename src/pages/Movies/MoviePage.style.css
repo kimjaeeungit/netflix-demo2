@@ -1,0 +1,28 @@
+.dropdown-box {
+  width: 100%;
+  border: 1px solid white;
+  background-color: black;
+  font-size: 1.3rem;
+  text-align: left;
+  align-items: center;
+  padding: 10px 15px 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropdown-box::after {
+  font-size: 2.3rem; /* 삼각형 크기 키우기 */
+  margin-left: 10px; /* 삼각형과 텍스트 사이에 공간 추가 */
+}
+
+.dropdown-menu {
+  width: 20rem;
+  color: white;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .main-container {
+    max-width: 100%;
+  }
+}

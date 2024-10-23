@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSearchMovieQuery } from '../../hooks/useSearchMovie';
 import { useSearchParams } from 'react-router-dom';
-import { Col, Container, Row, Spinner } from 'react-bootstrap';
-import { Alert } from 'bootstrap';
+import { Col, Container, Dropdown, Row, Spinner } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import MovieCard from '../../common/MovieCard/MovieCard';
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import './MoviePage.style.css';
 
 // 1. 페이지네이션 설치
 // 2. page state 만들기
@@ -18,6 +19,7 @@ import ReactPaginate from 'react-paginate';
 const MoviePage = () => {
   // 페이지 네이션
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState(0);
   // url 쿼리값 읽어오는거 하기
   const [query, setQuery] = useSearchParams();
   const keyword = query.get('q');
@@ -25,9 +27,26 @@ const MoviePage = () => {
     keyword,
     page,
   });
+
   const handlePageClick = ({ selected }) => {
     setPage(selected + 1);
   };
+  const changeSort = (num) => {
+    setSort(num);
+  };
+
+  // 전체 페이지 기준으로 정렬
+  const sortedMovies = () => {
+    if (!data || !data.results) return [];
+    const sorted = [...data.results].sort((a, b) => {
+      return sort === 0
+        ? b.popularity - a.popularity // Most Popular (내림차순)
+        : a.popularity - b.popularity; // Least Popular (오름차순)
+    });
+    return sorted;
+  };
+
+  console.log('setSort', sort);
   if (isLoading) {
     return (
       <div className="spinner-area">
@@ -39,19 +58,37 @@ const MoviePage = () => {
       </div>
     );
   }
+
   if (isError) {
     return <Alert variant="danger">{error.message}</Alert>;
   }
 
   return (
-    <Container>
+    <Container className="main-container">
       <Row>
-        <Col lg={4} xs={12}>
-          필터
+        <Col lg={4} xs={12} className="mt-4 mb-5">
+          <Dropdown>
+            <Dropdown.Toggle className="dropdown-box" variant="dark">
+              Sort Results By Popularity
+              {sort === 0
+                ? ' (Most Popular)'
+                : sort === 1
+                ? ' (Least Popular)'
+                : ''}
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="dropdown-menu" variant="dark">
+              <Dropdown.Item onClick={(num) => changeSort(0)}>
+                Popularity (Most Popular)
+              </Dropdown.Item>
+              <Dropdown.Item onClick={(num) => changeSort(1)}>
+                Popularity (Least Popular)
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Col>
         <Col lg={8} xs={12}>
-          <Row>
-            {data?.results.map((movie, index) => (
+          <Row className="mt-4 mb-5">
+            {sortedMovies().map((movie, index) => (
               <Col key={index} lg={4} xs={12}>
                 <MovieCard movie={movie} />
               </Col>
