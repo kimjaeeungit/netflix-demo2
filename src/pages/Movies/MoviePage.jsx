@@ -7,46 +7,77 @@ import MovieCard from '../../common/MovieCard/MovieCard';
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import './MoviePage.style.css';
-
-// 1. 페이지네이션 설치
-// 2. page state 만들기
-// 3. 페이지네이션 클릭할때마다 page바꿔주기
-// 4. page 값이 바뀔때마다 useSearchMovie에 page까지 넣어서 fetch
+import { useMovieGenreQuery } from '../../hooks/useMovieGenre';
+import GenreButton from './components/Genre/GenreButton';
 
 // 경로 2가지
 // 1. nav바에서 클릭해서 온경우 => popularMovie 보여주기
 // 2. keyword를 입력해서 온경우 => keyword와 관련돈 영화들을 보여줌
 const MoviePage = () => {
-  // 페이지 네이션
+  // 페이지와 정렬 상태 관리
   const [page, setPage] = useState(1);
-  const [sort, setSort] = useState(0);
-  // url 쿼리값 읽어오는거 하기
+  const [sort, setSort] = useState(0); // 드롭박스
+  const [genreBtnIds, setGenreBtnIds] = useState([]); //누른 버튼 장르 배열
+  const [filteredMovies, setFilteredMovies] = useState([]); //필터 된 데이터
+
+  // URL 쿼리에서 keyword 가져오기
   const [query, setQuery] = useSearchParams();
   const keyword = query.get('q');
+
+  // 영화 및 장르 데이터 가져오기
   const { data, isLoading, isError, error } = useSearchMovieQuery({
     keyword,
     page,
   });
+  const { data: GenreData } = useMovieGenreQuery();
 
+  // 페이지네이션 클릭 처리
   const handlePageClick = ({ selected }) => {
     setPage(selected + 1);
   };
+
+  // 정렬 변경 처리
   const changeSort = (num) => {
     setSort(num);
   };
 
-  // 전체 페이지 기준으로 정렬
-  const sortedMovies = () => {
-    if (!data || !data.results) return [];
-    const sorted = [...data.results].sort((a, b) => {
+  // 장르 버튼 클릭 처리 (장르 필터링)
+  const filterMovie = (id) => {
+    setGenreBtnIds((prev) =>
+      prev.includes(id)
+        ? prev.filter((genreId) => genreId !== id)
+        : [...prev, id]
+    );
+  };
+  // 필터링 및 정렬 처리 함수
+  const applyFilterAndSort = () => {
+    if (!data || !data.results) return;
+
+    // 장르 필터링
+    const filtered =
+      genreBtnIds.length === 0
+        ? data.results
+        : data.results.filter((movie) =>
+            movie.genre_ids.some((genreId) => genreBtnIds.includes(genreId))
+          );
+
+    // 정렬
+    const sorted = filtered.sort((a, b) => {
       return sort === 0
         ? b.popularity - a.popularity // Most Popular (내림차순)
         : a.popularity - b.popularity; // Least Popular (오름차순)
     });
-    return sorted;
+
+    setFilteredMovies(sorted);
   };
 
-  console.log('setSort', sort);
+  // genreBtnIds 또는 sort가 변경될 때마다 필터링 및 정렬 수행
+  useEffect(() => {
+    if (data) {
+      applyFilterAndSort();
+    }
+  }, [genreBtnIds, sort, data]);
+
   if (isLoading) {
     return (
       <div className="spinner-area">
@@ -66,40 +97,58 @@ const MoviePage = () => {
   return (
     <Container className="main-container">
       <Row>
+        {/* 왼쪽 장르 필터 및 정렬 */}
         <Col lg={4} xs={12} className="mt-4 mb-5">
           <Dropdown>
             <Dropdown.Toggle className="dropdown-box" variant="dark">
-              Sort Results By Popularity
-              {sort === 0
-                ? ' (Most Popular)'
-                : sort === 1
-                ? ' (Least Popular)'
-                : ''}
+              <div>
+                Sort Results By Popularity
+                {sort === 0
+                  ? ' (Most Popular)'
+                  : sort === 1
+                  ? ' (Least Popular)'
+                  : ''}
+              </div>
             </Dropdown.Toggle>
             <Dropdown.Menu className="dropdown-menu" variant="dark">
-              <Dropdown.Item onClick={(num) => changeSort(0)}>
+              <Dropdown.Item onClick={() => changeSort(0)}>
                 Popularity (Most Popular)
               </Dropdown.Item>
-              <Dropdown.Item onClick={(num) => changeSort(1)}>
+              <Dropdown.Item onClick={() => changeSort(1)}>
                 Popularity (Least Popular)
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+          <div className="genre-box">
+            <div className="genre-title">Genre</div>
+            {GenreData?.map((genre) => (
+              <GenreButton
+                className="genre-btn"
+                name={genre.name}
+                key={genre.id}
+                id={genre.id}
+                onClick={() => filterMovie(genre.id)} // 장르 필터링 함수 호출
+                isActive={genreBtnIds.includes(genre.id)} // 버튼 활성화 상태 표시
+              />
+            ))}
+          </div>
         </Col>
         <Col lg={8} xs={12}>
+          {/* 오른쪽 영화 목록 */}
           <Row className="mt-4 mb-5">
-            {sortedMovies().map((movie, index) => (
-              <Col key={index} lg={4} xs={12}>
+            {filteredMovies.map((movie, index) => (
+              <Col key={index} lg={3} xs={12}>
                 <MovieCard movie={movie} />
               </Col>
             ))}
           </Row>
+          {/* 페이지네이션 */}
           <ReactPaginate
             nextLabel="next >"
             onPageChange={handlePageClick}
             pageRangeDisplayed={3}
             marginPagesDisplayed={2}
-            pageCount={data?.total_pages} //전체 페이지
+            pageCount={data?.total_pages - 40000} //전체 페이지
             previousLabel="< previous"
             pageClassName="page-item"
             pageLinkClassName="page-link"

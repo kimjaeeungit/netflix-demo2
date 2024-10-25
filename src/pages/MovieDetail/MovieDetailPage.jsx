@@ -40,7 +40,7 @@ const MovieDetailPage = () => {
   if (isError) {
     return <Alert variant="danger">{error.message}</Alert>;
   }
-  console.log('reviewData', reviewData);
+  console.log('reviewDatareviewDatareviewData', reviewData);
   return (
     <Container>
       <Row>
@@ -50,7 +50,7 @@ const MovieDetailPage = () => {
             style={{
               backgroundImage:
                 'url(' +
-                `https://media.themoviedb.org/t/p/w300_and_h450_bestv2${data.poster_path}` +
+                `https://media.themoviedb.org/t/p/w300_and_h450_bestv2${data?.poster_path}` +
                 ')',
             }}
           ></div>
@@ -64,7 +64,7 @@ const MovieDetailPage = () => {
                 </Badge>
               ))}
             </div>
-            <div className="detail-title">{data.title}</div>
+            <div className="detail-title">{data?.title}</div>
             <div className="detail-popularity">
               <div>
                 <UsbMicroFill
@@ -168,19 +168,30 @@ const MovieDetailPage = () => {
           >
             Reviews
           </div>
-          {reviewData?.results.map((review, index) => (
-            <Review review={review} key={index} />
-          ))}
+          {reviewData && reviewData.results && reviewData.results.length > 0 ? (
+            reviewData.results.map((review) => (
+              <Review review={review} key={review.id} />
+            ))
+          ) : (
+            <div>No reviews available</div> // 데이터가 없을 경우 처리
+          )}
         </Row>
       ) : (
         <Row>
-          {recommendedMovieData.results.map((movie, index) => (
-            <Col key={index} lg={3} xs={12}>
-              <MovieCard movie={movie} />
-            </Col>
-          ))}
+          {recommendedMovieData &&
+          recommendedMovieData.results &&
+          recommendedMovieData.results.length > 0 ? (
+            recommendedMovieData.results.map((movie) => (
+              <Col key={movie.id} lg={3} xs={12}>
+                <MovieCard movie={movie} />
+              </Col>
+            ))
+          ) : (
+            <div>No recommended movies available</div> // 데이터가 없을 경우 처리
+          )}
         </Row>
       )}
+
       <MovieModal id={id} show={modalShow} onHide={() => setModalShow(false)} />
     </Container>
   );

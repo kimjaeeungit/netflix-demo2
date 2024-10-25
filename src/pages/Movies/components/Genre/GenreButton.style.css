@@ -1,0 +1,12 @@
+.genre-btn- {
+  margin: 7px;
+  border: none;
+  background-image: linear-gradient(to top right, red, black);
+}
+
+.genre-btn-active {
+  margin: 7px;
+  border: none;
+  background-image: linear-gradient(to top right, yellow, red, black);
+  font-weight: 700;
+}

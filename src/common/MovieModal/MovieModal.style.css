@@ -13,3 +13,18 @@
   stroke-width: 2; /* 원하는 굵기로 설정 */
   color: red;
 }
+
+.video-responsive {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio (divide height by width) */
+}
+
+.video-responsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

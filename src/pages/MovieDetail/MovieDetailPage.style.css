@@ -7,7 +7,7 @@
 }
 
 .movie-detail-page {
-  margin: 50px;
+  margin-top: 50px;
 }
 
 .genre-badge {
@@ -36,7 +36,6 @@
 }
 
 .all-icon {
-  /* 해야될것 글자색, all 위치 조정 */
   width: 30px;
   height: 30px;
   background-color: #ffcc00;
@@ -45,8 +44,8 @@
   margin: 18px;
 }
 .all-icon span {
-  color: black; /* 텍스트 색상 설정 */
-  font-weight: bold; /* 텍스트를 강조할 수 있음 */
+  color: black;
+  font-weight: bold;
   font-size: 14px;
   width: 100%;
   justify-content: center;

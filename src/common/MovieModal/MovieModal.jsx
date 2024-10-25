@@ -24,6 +24,7 @@ const MovieModal = (props) => {
   const onReady = (event) => {
     // access to player in all event handlers via event.target
     event.target.pauseVideo();
+    event.target.unMute(); // Unmute the video
   };
 
   if (isError) {
@@ -51,7 +52,13 @@ const MovieModal = (props) => {
         />
       </Modal.Header>
       <Modal.Body style={{ backgroundColor: 'black', color: 'white' }}>
-        <YouTube videoId={data.results[1].key} opts={opts} onReady={onReady} />
+        <div className="video-responsive">
+          <YouTube
+            videoId={data.results[1].key}
+            opts={opts}
+            onReady={onReady}
+          />
+        </div>
       </Modal.Body>
       {/* <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
