@@ -48,3 +48,13 @@
 
 @media (max-width: 991px) {
 }
+
+.movie-list-row {
+  margin: -1%;
+}
+
+.movie-list-row > div {
+  padding: 0px;
+  margin: 1%;
+  width: 23%;
+}

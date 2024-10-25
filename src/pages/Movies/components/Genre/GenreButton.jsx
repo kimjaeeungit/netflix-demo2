@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import './GenreButton.style.css';
 
-const GenreButton = ({ name, id, onClick, isActive }) => {
-  const [actBtn, setActBtn] = useState(false);
-
-  //console.log('actBtn', name, actBtn);
+const GenreButton = ({ name, onClick, isActive }) => {
   return (
     <Button
       className={`genre-btn-${isActive ? 'active' : ''}`} // 버튼의 활성 상태에 따라 클래스 추가

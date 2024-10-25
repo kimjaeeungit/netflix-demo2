@@ -41,7 +41,7 @@ const MoviePage = () => {
     setSort(num);
   };
 
-  // 장르 버튼 클릭 처리 (장르 필터링)
+  // 장르 버튼 클릭 처리
   const filterMovie = (id) => {
     setGenreBtnIds((prev) =>
       prev.includes(id)
@@ -135,7 +135,7 @@ const MoviePage = () => {
         </Col>
         <Col lg={8} xs={12}>
           {/* 오른쪽 영화 목록 */}
-          <Row className="mt-4 mb-5">
+          <Row className="movie-list-row mt-4 mb-5">
             {filteredMovies.map((movie, index) => (
               <Col key={index} lg={3} xs={12}>
                 <MovieCard movie={movie} />
