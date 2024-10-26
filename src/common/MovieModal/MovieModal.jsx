@@ -8,7 +8,7 @@ import { XLg } from 'react-bootstrap-icons';
 
 const MovieModal = (props) => {
   const { data, isLoading, isError, error } = useMovieVideoQuery(props.id);
-  console.log('adsadasdad', opts);
+
   if (isLoading) {
     return (
       <div className="spinner-area">
@@ -30,6 +30,9 @@ const MovieModal = (props) => {
   if (isError) {
     return <Alert variant="danger">{error.message}</Alert>;
   }
+
+  // 비디오 키
+  const videoKey = data?.results?.[0]?.key; // 0번째 인덱스 사용
 
   return (
     <Modal
@@ -53,16 +56,21 @@ const MovieModal = (props) => {
       </Modal.Header>
       <Modal.Body style={{ backgroundColor: 'black', color: 'white' }}>
         <div className="video-responsive">
-          <YouTube
-            videoId={data.results[1].key}
-            opts={opts}
-            onReady={onReady}
-          />
+          {videoKey ? (
+            <YouTube
+              videoId={videoKey} // 동영상 키 사용
+              opts={opts}
+              onReady={onReady}
+            />
+          ) : (
+            <div>
+              <Alert variant="danger" style={{ marginBottom: '20px' }}>
+                No video available.
+              </Alert>
+            </div> // 비디오가 없는 경우
+          )}
         </div>
       </Modal.Body>
-      {/* <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer> */}
     </Modal>
   );
 };

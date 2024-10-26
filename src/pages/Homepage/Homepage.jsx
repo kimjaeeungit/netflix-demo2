@@ -11,7 +11,7 @@ import './Homepage.style.css';
 // 4. upcoming movie
 const Homepage = () => {
   return (
-    <div>
+    <div style={{ marginBottom: '50px' }}>
       <Banner />
       <PopularMovieSlide />
       <TopRatedMovieSlide />

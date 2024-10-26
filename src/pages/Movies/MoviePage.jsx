@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSearchMovieQuery } from '../../hooks/useSearchMovie';
 import { useSearchParams } from 'react-router-dom';
 import { Col, Container, Dropdown, Row, Spinner } from 'react-bootstrap';
@@ -39,8 +39,8 @@ const MoviePage = () => {
   // 정렬 변경 처리
   const changeSort = (num) => {
     setSort(num);
+    applyFilterAndSort(num); // 상태를 업데이트한 후 직접 호출
   };
-
   // 장르 버튼 클릭 처리
   const filterMovie = (id) => {
     setGenreBtnIds((prev) =>
@@ -49,34 +49,35 @@ const MoviePage = () => {
         : [...prev, id]
     );
   };
-  // 필터링 및 정렬 처리 함수
-  const applyFilterAndSort = () => {
-    if (!data || !data.results) return;
+  // useCallback으로 applyFilterAndSort 메모이제이션
+  const applyFilterAndSort = useCallback(
+    (currentSort) => {
+      if (!data || !data.results) return;
 
-    // 장르 필터링
-    const filtered =
-      genreBtnIds.length === 0
-        ? data.results
-        : data.results.filter((movie) =>
-            movie.genre_ids.some((genreId) => genreBtnIds.includes(genreId))
-          );
+      // 장르 필터링
+      const filtered =
+        genreBtnIds.length === 0
+          ? data.results
+          : data.results.filter((movie) =>
+              movie.genre_ids.some((genreId) => genreBtnIds.includes(genreId))
+            );
 
-    // 정렬
-    const sorted = filtered.sort((a, b) => {
-      return sort === 0
-        ? b.popularity - a.popularity // Most Popular (내림차순)
-        : a.popularity - b.popularity; // Least Popular (오름차순)
-    });
+      // 정렬
+      const sorted = filtered.sort((a, b) => {
+        return currentSort === 0
+          ? b.popularity - a.popularity // Most Popular
+          : a.popularity - b.popularity; // Least Popular
+      });
 
-    setFilteredMovies(sorted);
-  };
+      setFilteredMovies(sorted);
+    },
+    [data, genreBtnIds]
+  );
 
-  // genreBtnIds 또는 sort가 변경될 때마다 필터링 및 정렬 수행
+  // genreBtnIds, data 상태가 변경될 때마다 필터링 및 정렬 수행
   useEffect(() => {
-    if (data) {
-      applyFilterAndSort();
-    }
-  }, [genreBtnIds, sort, data]);
+    applyFilterAndSort(sort); // sort 상태를 인자로 넘김
+  }, [genreBtnIds, data]);
 
   if (isLoading) {
     return (
@@ -98,7 +99,7 @@ const MoviePage = () => {
     <Container className="main-container">
       <Row>
         {/* 왼쪽 장르 필터 및 정렬 */}
-        <Col lg={4} xs={12} className="mt-4 mb-5">
+        <Col lg={4} xs={12} className="filter-sort-box mt-4 mb-5">
           <Dropdown>
             <Dropdown.Toggle className="dropdown-box" variant="dark">
               <div>
@@ -133,7 +134,7 @@ const MoviePage = () => {
             ))}
           </div>
         </Col>
-        <Col lg={8} xs={12}>
+        <Col lg={8} xs={12} className="filter-sort-box">
           {/* 오른쪽 영화 목록 */}
           <Row className="movie-list-row mt-4 mb-5">
             {filteredMovies.map((movie, index) => (
@@ -144,12 +145,12 @@ const MoviePage = () => {
           </Row>
           {/* 페이지네이션 */}
           <ReactPaginate
-            nextLabel="next >"
+            nextLabel=">"
             onPageChange={handlePageClick}
             pageRangeDisplayed={3}
             marginPagesDisplayed={2}
-            pageCount={data?.total_pages - 40000} //전체 페이지
-            previousLabel="< previous"
+            pageCount={500} //전체 페이지
+            previousLabel="<"
             pageClassName="page-item"
             pageLinkClassName="page-link"
             previousClassName="page-item"

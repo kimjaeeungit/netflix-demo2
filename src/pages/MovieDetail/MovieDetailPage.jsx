@@ -40,7 +40,7 @@ const MovieDetailPage = () => {
   if (isError) {
     return <Alert variant="danger">{error.message}</Alert>;
   }
-  console.log('reviewDatareviewDatareviewData', reviewData);
+
   return (
     <Container>
       <Row>
@@ -59,7 +59,7 @@ const MovieDetailPage = () => {
           <div className="movie-detail-page">
             <div>
               {data?.genres.map((genre) => (
-                <Badge className="genre-badge" pill bg="danger">
+                <Badge key={genre.id} className="genre-badge" pill bg="danger">
                   {genre.name}
                 </Badge>
               ))}
@@ -168,26 +168,28 @@ const MovieDetailPage = () => {
           >
             Reviews
           </div>
-          {reviewData && reviewData.results && reviewData.results.length > 0 ? (
+          {reviewData && reviewData.results.length > 0 ? (
             reviewData.results.map((review) => (
               <Review review={review} key={review.id} />
             ))
           ) : (
-            <div>No reviews available</div> // 데이터가 없을 경우 처리
+            <Alert variant="danger" style={{ marginBottom: '20px' }}>
+              No reviews available
+            </Alert> // 리뷰 데이터가 없을 경우 처리
           )}
         </Row>
       ) : (
         <Row>
-          {recommendedMovieData &&
-          recommendedMovieData.results &&
-          recommendedMovieData.results.length > 0 ? (
+          {recommendedMovieData && recommendedMovieData.results.length > 0 ? (
             recommendedMovieData.results.map((movie) => (
               <Col key={movie.id} lg={3} xs={12}>
                 <MovieCard movie={movie} />
               </Col>
             ))
           ) : (
-            <div>No recommended movies available</div> // 데이터가 없을 경우 처리
+            <Alert variant="danger" style={{ marginBottom: '20px' }}>
+              No recommended movies available
+            </Alert> // 추천 영화 데이터가 없을 경우 처리
           )}
         </Row>
       )}

@@ -1,6 +1,5 @@
 .carousel-container {
   overflow: hidden;
-  height: 440px;
 }
 
 @media (max-width: 480px) {
@@ -16,5 +15,9 @@
 
 .typeTitle {
   padding-left: 20px;
-  margin-bottom: 0px;
+  margin-bottom: 15px;
+}
+
+.react-multi-carousel-list {
+  padding-bottom: 40px;
 }

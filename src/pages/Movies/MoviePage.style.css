@@ -27,14 +27,8 @@
   width: 100%;
 }
 
-@media (min-width: 768px) {
-  .main-container {
-    max-width: 100%;
-  }
-}
-
 .genre-box {
-  margin-top: 100px;
+  margin-top: 20px;
   border: 2px solid white;
   border-radius: 5px;
   padding: 15px;
@@ -46,15 +40,76 @@
   margin-bottom: 15px;
 }
 
-@media (max-width: 991px) {
-}
-
 .movie-list-row {
-  margin: -1%;
+  margin: 0.708rem -1% 3% !important;
 }
 
 .movie-list-row > div {
   padding: 0px;
   margin: 1%;
   width: 23%;
+  transition: all 0.4s;
+}
+
+/* 카드 개수 바꾸기 */
+/* 1200 이하는 카드 3개 */
+@media (max-width: 1200px) {
+  .movie-list-row > div {
+    width: 31.3%;
+  }
+}
+/*  767 이하는 카드 2개 */
+@media (max-width: 767px) {
+  .movie-list-row > div {
+    width: 48%;
+  }
+}
+
+.pagination {
+  justify-content: center;
+  --bs-pagination-disabled-bg: rgb(112, 91, 91); /* 원하는 색상으로 수정 */
+  --bs-pagination-disabled-color: white;
+}
+
+.filter-sort-box {
+  transition: all 0.4s;
+}
+
+.page-item {
+  /* 각각의 페이지 번호 버튼 (li) 요소 */
+}
+
+.page-link {
+  /* 페이지 링크 (a) 요소 */
+  padding: 8px 12px;
+  color: red; /* 기본 텍스트 색상 */
+  text-decoration: none;
+  border: none;
+  font-size: 1.1rem;
+  background-color: black;
+  font-weight: 900;
+}
+
+.page-link:hover {
+  background-color: rgb(112, 91, 91); /* 호버 효과 */
+}
+
+.page-item {
+  /* 이전 및 다음 버튼을 감싸는 li 요소 */
+  cursor: pointer;
+}
+
+.page-link {
+  color: red;
+}
+
+.page-link:hover {
+  color: red; /* 호버 시 색상 */
+}
+
+.active .page-link {
+  background-color: rgb(112, 91, 91);
+  color: white;
+  border-color: black;
+  box-shadow: none; /* 파란색 빛나는 효과 */
 }
